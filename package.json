@@ -1,0 +1,22 @@
+{
+  "name": "dux-statestore",
+  "version": "1.0.0",
+  "description": "A StateStore for Dux",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asbjornenge/dux-statestore.git"
+  },
+  "author": "Asbjorn Enge <asbjorn@hanafjedle.net>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/asbjornenge/dux-statestore/issues"
+  },
+  "homepage": "https://github.com/asbjornenge/dux-statestore",
+  "dependencies": {
+    "firebase": "^2.1.1"
+  }
+}
