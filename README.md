@@ -1,7 +1,8 @@
 # Dux StateStore
 
+>This is part of the ref. implementation of the Dux architecture.
+
 A StateStore for [Dux](https://github.com/asbjornenge/dux).  
-This is part of the ref. implementation of the Dux architecture.
 
 This StateStore uses a [Firebase](https://www.firebase.com/) to store it's state. So if you are just getting started with dux, head over there and create a free firebase for your deployment. Mare sure to read the [security](#security) section below.
 
