@@ -6,10 +6,19 @@ var args = require('minimist')(process.argv.slice(2), {
         'firebase-secret' : process.env['FIREBASE_SECRET']
     }
 })
-var utils = require('./utils')
+var utils   = require('./utils')
+var fb_conn = require('./firebase-connection')
+//var fb_stream = require('./firebase-stream')
+//var fb_api    = require('./firebase-api')
 
 utils.validateFirebaseArgs(args)
 
-console.log('GOT HERE')
+var init = function() {
+    console.log('initializing')
+}
 
-// interval here until all criteria are met, then kill interval and init store ... ?
+var connection = fb_conn(args)
+var initInterval = setInterval(function() {
+    console.log('interval')
+    if (connection.validate()) { clearInterval(initInterval); init() }
+},1000)
