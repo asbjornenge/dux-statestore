@@ -17,8 +17,11 @@ var init = function() {
     console.log('initializing')
 }
 
-var connection = fb_conn(args)
-var initInterval = setInterval(function() {
-    console.log('interval')
-    if (connection.validate()) { clearInterval(initInterval); init() }
-},1000)
+var connection = fb_conn(args).connect(function(err) {
+    if (err) { console.log(err); process.exit(1) }
+    if (!err) console.log('Connected to Firebase. Continuing...')
+})
+//var initInterval = setInterval(function() {
+//    console.log('interval')
+//    if (connection.validate()) { clearInterval(initInterval); init() }
+//},1000)
