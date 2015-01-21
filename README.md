@@ -1,6 +1,6 @@
 # Dux StateStore
 
->This is part of the ref. implementation of the Dux architecture.
+>Part of the ref. implementation of the [Dux](https://github.com/asbjornenge/dux) architecture.
 
 A StateStore for [Dux](https://github.com/asbjornenge/dux).  
 
