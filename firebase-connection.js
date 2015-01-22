@@ -2,22 +2,41 @@ var Firebase = require('firebase')
 
 var FirebaseConnection = function(args) {
     this.args = args
-    this.root = new Firebase(args['firebase-url']+args['firebase-path'])
+    this.connectMessage = false
 }
 FirebaseConnection.prototype = {
 
-    connect : function(callback) {
+    connect : function() {
+        console.log('Connecting to Firebase')
+        this.root = new Firebase(this.args['firebase-url']+this.args['firebase-path'])
+    },
+
+    auth : function(callback) {
+        console.log('Authenticating with Firebase')
         this.root.authWithCustomToken(this.args['firebase-secret'], function(err, auth) {
             if (typeof callback === 'function') callback(err, auth)
         })
-        return this
     },
 
-    validate : function() {
-        console.log(this.root)
-        return true
-    }
+    checkState : function(callback) {
+        if (!this.root) this.connect()
+        if (!this.root.getAuth()) this.auth(callback)
+        else callback()
+    },
 
+    keepAlive : function(interval, callback) {
+        setInterval(function() {
+            this.checkState(callback)
+        }.bind(this),interval)
+        this.checkState(callback)
+    },
+
+    ready : function() {
+        var ready = (this.root != undefined && this.root.getAuth() != null)
+        if (ready && !this.connectMessage) { console.log('Connected to Firebase! :-D'); this.connectMessage = true }
+        if (!ready && this.connectMessage) { console.log('Disconnected from Firebase! :-('); this.connectMessage = false }
+        return ready
+    }
 }
 
 module.exports = function(args) { return new FirebaseConnection(args) }
