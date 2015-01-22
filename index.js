@@ -22,17 +22,17 @@ var runapp = function() {
     if (running) return
     try {
         running = true
-        console.log('initializing')
+        console.log('RUNNING')
     } catch(e) {
         running = false
     }
 }
 
 var check_state = function() {
-    console.log('checking state')
-    console.log('firebase', firebase_connection.ready())
-    console.log('dispatcher', dispatcher_connection.ready())
-    if (firebase_connection.ready()) runapp()
+//    console.log('checking state')
+//    console.log('firebase', firebase_connection.ready())
+//    console.log('dispatcher', dispatcher_connection.ready())
+    if (firebase_connection.ready() && dispatcher_connection.ready()) runapp()
 }
 firebase_connection.keepAlive(5000, function() {
     check_state()
