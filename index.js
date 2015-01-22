@@ -8,7 +8,7 @@ var args = require('minimist')(process.argv.slice(2), {
 })
 var utils   = require('./utils')
 var fb_conn = require('./firebase-connection')
-//var dispatcher_connection = require('./dispatcher-connection')
+var dp_conn = require('./dispatcher-connection')
 
 //var fb_stream = require('./firebase-stream')
 //var fb_api    = require('./firebase-api')
@@ -16,7 +16,7 @@ var fb_conn = require('./firebase-connection')
 utils.validateFirebaseArgs(args)
 
 var firebase_connection = fb_conn(args)
-
+var dispatcher_connection = dp_conn(args)
 var running = false
 var runapp = function() {
     if (running) return
@@ -29,23 +29,15 @@ var runapp = function() {
 }
 
 var check_state = function() {
-    console.log('checking state', firebase_connection.ready())
+    console.log('checking state')
+    console.log('firebase', firebase_connection.ready())
+    console.log('dispatcher', dispatcher_connection.ready())
     if (firebase_connection.ready()) runapp()
 }
 firebase_connection.keepAlive(5000, function() {
     check_state()
 })
-//dispatcher_connection.keepAlive(function() {
-//    check_state()
-//})
+dispatcher_connection.keepAlive(5000,function() {
+    check_state()
+})
 
-
-//var tcpp = require('tcp-ping')
-//var connection = fb_conn(args).connect(function(err) {
-//    if (err) { console.log(err); process.exit(1) }
-//    if (!err) console.log('Connected to Firebase. Continuing...')
-//     
-//    tcpp.ping({ address : 'dispatcher.dux.test', port : 8000, timeout : 1000, attempts : 10}, function(err, data) {
-//        console.log(err, data)
-//    }) 
-//})
