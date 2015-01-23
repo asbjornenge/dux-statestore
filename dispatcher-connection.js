@@ -13,26 +13,24 @@ DispatcherConnection.prototype = {
 
     checkDns : function(callback) {
         dns.resolve4(this.args.dispatcher, function(err, addresses) {
-            this.dnsReady = (err == null)
-            if (this.dnsReady && !this.dnsMessage) { 
-                console.log('Dispatcher DNS resolved!')
-                this.dnsMessage = true
-            }
-            if (!this.dnsReady && this.dnsMessage) { 
-                console.log('Unable to resolve Dispatcher DNS'); 
-                this.dnsMessage = false 
-            }
-            if (!this.dnsReady && !this.dnsMessge) {
-                console.log('Unable to resolve Dispatcher DNS');
-            }
+            var isReady  = (err == null)
+            var wasReady = this.dnsReady
+            this.dnsReady = isReady
+            this.displayDnsStatusMaybe(isReady != wasReady)
             callback(err)
         }.bind(this))
     },
 
+    displayDnsStatusMaybe : function(newstate) {
+        if (!newstate && this.dnsMessage) return
+        this.dnsMessage = true
+        if (this.dnsReady) console.log('Dispatcher DNS resolved!')
+        else console.log('Unable to resolve Dispatcher DNS')
+    },
+
     checkConnection : function(callback) {
-        console.log('Checking Dispatcher Connection')
         tcpp.ping({ address : this.args.dispatcher, port : 8000, timeout : 1000, attempts : 1 }, function(err, data) {
-            this.connectionReady = (err != null)
+            this.connectionReady = (err == null)
             callback(err)
         }.bind(this))
     },
@@ -44,9 +42,6 @@ DispatcherConnection.prototype = {
                callback() 
             })
         }.bind(this))
-//        if (!this.root) this.connect()
-//        if (!this.root.getAuth()) this.auth(callback)
-//        else callback()
     },
 
     keepAlive : function(interval, callback) {

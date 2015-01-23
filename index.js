@@ -3,36 +3,38 @@ var args = require('minimist')(process.argv.slice(2), {
     default : {
         'firebase-url'    : process.env['FIREBASE_URL'],
         'firebase-path'   : '/',
-        'firebase-secret' : process.env['FIREBASE_SECRET']
+        'firebase-secret' : process.env['FIREBASE_SECRET'],
+        'dispatcher'      : 'dux-dispatcher.dux.test'
     }
 })
 var utils   = require('./utils')
 var fb_conn = require('./firebase-connection')
 var dp_conn = require('./dispatcher-connection')
 
-//var fb_stream = require('./firebase-stream')
-//var fb_api    = require('./firebase-api')
-
 utils.validateFirebaseArgs(args)
 
 var firebase_connection = fb_conn(args)
 var dispatcher_connection = dp_conn(args)
-var running = false
-var runapp = function() {
-    if (running) return
-    try {
-        running = true
-        console.log('RUNNING')
-    } catch(e) {
-        running = false
+
+var app = function() {
+    this.running = false
+}
+app.prototype = {
+    start : function() {
+        this.running = true
+        console.log('STARTING')
+    },
+    stop : function() {
+        this.running = false
+        console.log('STOPPING')
     }
 }
+var myapp = new app()
 
 var check_state = function() {
-//    console.log('checking state')
-//    console.log('firebase', firebase_connection.ready())
-//    console.log('dispatcher', dispatcher_connection.ready())
-    if (firebase_connection.ready() && dispatcher_connection.ready()) runapp()
+    var ready = (firebase_connection.ready() && dispatcher_connection.ready())
+    if (ready && !myapp.running) myapp.start()
+    if (!ready && myapp.running) myapp.stop()
 }
 firebase_connection.keepAlive(5000, function() {
     check_state()
