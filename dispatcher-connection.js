@@ -24,15 +24,25 @@ DispatcherConnection.prototype = {
     displayDnsStatusMaybe : function(newstate) {
         if (!newstate && this.dnsMessage) return
         this.dnsMessage = true
-        if (this.dnsReady) console.log('Dispatcher DNS resolved!')
-        else console.log('Unable to resolve Dispatcher DNS')
+        if (this.dnsReady) console.log('Resolving Dispatcher...')
+        else console.log('Unable to resolve Dispatcher DNS...')
     },
 
     checkConnection : function(callback) {
         tcpp.ping({ address : this.args.dispatcher, port : 8000, timeout : 1000, attempts : 1 }, function(err, data) {
-            this.connectionReady = (err == null)
+            var isReady  = (err == null)
+            var wasReady = this.connectionReady
+            this.connectionReady = isReady
+            this.displayConnectionStatusMaybe(isReady != wasReady)
             callback(err)
         }.bind(this))
+    },
+
+    displayConnectionStatusMaybe : function(newstate) {
+        if (!newstate && this.connectionMessage) return
+        this.connectionMessage = true
+        if (this.connectionReady) console.log('Verifying Dispatcher connection...')
+        else console.log('Unable to verify Dispatcher connection...')
     },
 
     checkState : function(callback) {

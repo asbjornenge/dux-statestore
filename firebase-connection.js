@@ -7,12 +7,12 @@ var FirebaseConnection = function(args) {
 FirebaseConnection.prototype = {
 
     connect : function() {
-        console.log('Connecting to Firebase')
+        console.log('Connecting to Firebase...')
         this.root = new Firebase(this.args['firebase-url']+this.args['firebase-path'])
     },
 
     auth : function(callback) {
-        console.log('Authenticating with Firebase')
+        console.log('Authenticating with Firebase...')
         this.root.authWithCustomToken(this.args['firebase-secret'], function(err, auth) {
             if (typeof callback === 'function') callback(err, auth)
         })
