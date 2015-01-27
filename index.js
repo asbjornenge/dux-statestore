@@ -7,34 +7,21 @@ var args = require('minimist')(process.argv.slice(2), {
         'dispatcher'      : 'dux-dispatcher.dux.test'
     }
 })
-var utils   = require('./utils')
-var fb_conn = require('./firebase-connection')
-var dp_conn = require('./dispatcher-connection')
+var utils           = require('./utils')
+var fb_conn         = require('./firebase-connection')
+var dp_conn         = require('./dispatcher-connection')
+var StateDispatcher = require('./state-dispatcher')
 
 utils.validateFirebaseArgs(args)
 
 var firebase_connection = fb_conn(args)
 var dispatcher_connection = dp_conn(args)
-
-var app = function() {
-    this.running = false
-}
-app.prototype = {
-    start : function() {
-        this.running = true
-        console.log('STARTING')
-    },
-    stop : function() {
-        this.running = false
-        console.log('STOPPING')
-    }
-}
-var myapp = new app()
+var dispatcher = new StateDispatcher(firebase_connection, dispatcher_connection)
 
 var check_state = function() {
     var ready = (firebase_connection.ready() && dispatcher_connection.ready())
-    if (ready && !myapp.running) myapp.start()
-    if (!ready && myapp.running) myapp.stop()
+    if (ready && !dispatcher.running) dispatcher.start()
+    if (!ready && dispatcher.running) dispatcher.stop()
 }
 firebase_connection.keepAlive(5000, function() {
     check_state()
