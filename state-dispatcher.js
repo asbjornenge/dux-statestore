@@ -1,10 +1,11 @@
 
+var diff = require('deep-diff').diff
 
 var StateDispatcher = function(firebase, dispatcher) {
     this.running    = false
     this.firebase   = firebase
     this.dispatcher = dispatcher
-    this.states     = {}
+    this.state      = {}
 }
 StateDispatcher.prototype = {
 
@@ -18,16 +19,32 @@ StateDispatcher.prototype = {
         this.running = false
         this.stopListeners()
     },
-    distributeState : function(snap) {
-        var state = snap.val()
-        this.state = state || {}
-        console.log('value', this.state)
+    diffState : function(snap) {
+        var new_state = snap.val()
+        var cur_state = this.state
+        var difference = diff(cur_state, new_state)
+        var to_distribute = difference.filter(function(d) {
+            return d.kind != 'N'
+        }).map(function(d) {
+            if (d.kind == 'D') return { state : d.path[0], value : null }
+            return { state : d.path[0] }
+        })
+        var fresh_state = Object.keys(new_state).filter(function(s) {
+            return !cur_state.hasOwnProperty(s)
+        }).map(function(s) {
+            return { state : s }
+        })
+        this.distributeState(to_distribute.concat(fresh_state))
+        this.state = new_state || {}
+    },
+    distributeState : function(to_distribute) {
+        console.log('distributing', to_distribute)
     },
     startListeners : function() {
-        this.firebase.root.on('value', this.distributeState)
+        this.firebase.root.on('value', this.diffState.bind(this))
     },
     stopListeners : function() {
-        this.firebase.root.off('value', this.distributeState)
+        this.firebase.root.off('value', this.diffState.bind(this))
     }
 
 }
