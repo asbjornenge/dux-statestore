@@ -23,10 +23,12 @@ var check_state = function() {
     if (ready && !dispatcher.running) dispatcher.start()
     if (!ready && dispatcher.running) dispatcher.stop()
 }
-firebase_connection.keepAlive(5000, function() {
+firebase_connection.keepAlive(5000, function(err) {
+    if (err) console.log('Firebase Connection Error:',err)
     check_state()
 })
-dispatcher_connection.keepAlive(5000,function() {
+dispatcher_connection.keepAlive(5000,function(err) {
+    if (err) console.log('Dispatcher Connection Error:',err)
     check_state()
 })
 

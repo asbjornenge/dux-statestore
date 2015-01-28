@@ -53,10 +53,11 @@ DispatcherConnection.prototype = {
 
     checkState : function(callback) {
         this.checkDns(function(err) {
-            if (err) { this.client = null; callback(); return }
+            if (err) { this.client = null; callback(err); return }
             this.checkConnection(function(err) {
-                if (err) { this.client = null; callback(); return }
+                if (err) { this.client = null; callback(err); return }
                 this.makeClient()
+                callback()
             }.bind(this))
         }.bind(this))
     },
