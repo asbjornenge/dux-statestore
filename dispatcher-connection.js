@@ -1,8 +1,10 @@
 var dns  = require('dns')
 var tcpp = require('tcp-ping')
+var faye = require('faye')
 
 var DispatcherConnection = function(args) {
     this.args              = args
+    this.client            = null
     this.dnsReady          = false
     this.connectionReady   = false
     this.dnsMessage        = false
@@ -10,6 +12,10 @@ var DispatcherConnection = function(args) {
     this.connectMessage    = false
 }
 DispatcherConnection.prototype = {
+
+    makeClient : function() {
+        this.client = new faye.Client('http://'+this.args.dispatcher+':8000')
+    },
 
     checkDns : function(callback) {
         dns.resolve4(this.args.dispatcher, function(err, addresses) {
@@ -47,10 +53,11 @@ DispatcherConnection.prototype = {
 
     checkState : function(callback) {
         this.checkDns(function(err) {
-            if (err) { callback(); return }
+            if (err) { this.client = null; callback(); return }
             this.checkConnection(function(err) {
-               callback() 
-            })
+                if (err) { this.client = null; callback(); return }
+                this.makeClient()
+            }.bind(this))
         }.bind(this))
     },
 
@@ -62,7 +69,7 @@ DispatcherConnection.prototype = {
     },
 
     ready : function() {
-        var ready = (this.dnsReady && this.connectionReady)
+        var ready = (this.dnsReady && this.connectionReady && this.client != null)
         if (ready && !this.connectMessage) { console.log('Connected to Dispatcher! :-D'); this.connectMessage = true }
         if (!ready && this.connectMessage) { console.log('Disconnected from Dispatcher! :-('); this.connectMessage = false }
         return ready

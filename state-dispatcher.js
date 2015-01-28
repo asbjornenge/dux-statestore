@@ -34,11 +34,15 @@ StateDispatcher.prototype = {
         }).map(function(s) {
             return { state : s }
         })
-        this.distributeState(to_distribute.concat(fresh_state))
         this.state = new_state || {}
+        this.distributeState(to_distribute.concat(fresh_state))
     },
     distributeState : function(to_distribute) {
-        console.log('distributing', to_distribute)
+        to_distribute.forEach(function(dist) {
+            console.log('Dispatching state :',dist.state)
+            console.log('    ',this.state[dist.state])
+            this.dispatcher.client.publish('/'+dist.state, this.state[dist.state])
+        }.bind(this))
     },
     startListeners : function() {
         this.firebase.root.on('value', this.diffState.bind(this))
