@@ -1,5 +1,6 @@
-
-var diff = require('deep-diff').diff
+var diff       = require('deep-diff').diff
+var chalk      = require('chalk')
+var prettyjson = require('prettyjson')
 
 var StateDispatcher = function(firebase, dispatcher) {
     this.running    = false
@@ -39,8 +40,9 @@ StateDispatcher.prototype = {
     },
     distributeState : function(to_distribute) {
         to_distribute.forEach(function(dist) {
-            console.log('Dispatching state :',dist.state)
-            console.log('    ',this.state[dist.state])
+            console.log('Dispatching', chalk.cyan(dist.state))
+            console.log(prettyjson.render(this.state[dist.state],{}))
+            console.log('--------------------------')
             this.dispatcher.client.publish('/'+dist.state, this.state[dist.state])
         }.bind(this))
     },
