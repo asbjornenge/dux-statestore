@@ -10,10 +10,6 @@ This StateStore uses a [Firebase](https://www.firebase.com/) to store it's state
 
     docker run -d asbjornenge/dux-statestore --firebase <url> --firebase-secret <secret>
 
-## Bootstrapping
-
-The StateStore can bootstrap a basic Dux configuration.
-
-## Security
+## Firebase Security
 
 Coming...
