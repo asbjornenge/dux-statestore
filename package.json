@@ -19,10 +19,9 @@
   "dependencies": {
     "chalk": "^0.5.1",
     "deep-diff": "^0.3.0",
-    "faye": "^1.1.0",
+    "dux-dispatcher-connection": "^2.0.0",
     "firebase": "^2.1.1",
     "minimist": "^1.1.0",
-    "prettyjson": "^1.0.0",
-    "tcp-ping": "^0.1.1"
+    "prettyjson": "^1.0.0"
   }
 }
