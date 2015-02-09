@@ -43,7 +43,7 @@ StateDispatcher.prototype = {
             console.log('Dispatching', chalk.cyan(dist.state))
             console.log(prettyjson.render(this.state[dist.state],{}))
             console.log('--------------------------')
-            this.dispatcher.client.publish('/'+dist.state, this.state[dist.state])
+            this.dispatcher.client.publish('/state/'+dist.state, this.state[dist.state])
         }.bind(this))
     },
     startListeners : function() {
