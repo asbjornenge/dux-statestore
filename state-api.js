@@ -9,9 +9,10 @@ StateApi.prototype = {
     start : function() {
         http.createServer(function (req, res) {
             console.log(req.url)
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            var state = this.stateStore.state[req.url.slice(1)] || {}
-            res.end(JSON.stringify(state))
+            var state = this.stateStore.state[req.url.slice(1)]
+            if (state) res.writeHead(200, {'Content-Type': 'application/json'})
+            else       res.writeHead(404, {'Content-Type': 'application/json'})
+            res.end(JSON.stringify(state || []))
         }.bind(this)).listen(8000)
     }
 }
