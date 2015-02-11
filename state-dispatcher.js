@@ -21,7 +21,7 @@ StateDispatcher.prototype = {
         this.stopListeners()
     },
     diffState : function(snap) {
-        var new_state = snap.val()
+        var new_state = snap.val() || {}
         var cur_state = this.state
         var difference = diff(cur_state, new_state) || []
         var to_distribute = difference.filter(function(d) {
