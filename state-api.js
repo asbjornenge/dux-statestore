@@ -1,5 +1,4 @@
-var http  = require('http')
-var chalk = require('chalk')
+var http   = require('http')
 
 var StateApi = function(options, stateStore) {
     this.options      = options || {}
@@ -8,7 +7,6 @@ var StateApi = function(options, stateStore) {
 }
 StateApi.prototype = {
     start : function() {
-        console.log(chalk.green('Starting State HTTP API :-)'))
         http.createServer(function (req, res) {
             console.log(req.url)
             var state = this.stateStore.state[req.url.slice(1)]

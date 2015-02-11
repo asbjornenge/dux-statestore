@@ -1,4 +1,5 @@
 var Firebase = require('firebase')
+var chalk    = require('chalk')
 
 var FirebaseConnection = function(args) {
     this.args = args
@@ -12,7 +13,7 @@ FirebaseConnection.prototype = {
     },
 
     auth : function(callback) {
-        console.log('Authenticating with Firebase...')
+        console.log(chalk.yellow('Authenticating with Firebase...'))
         this.root.authWithCustomToken(this.args['firebase-secret'], function(err, auth) {
             if (typeof callback === 'function') callback(err, auth)
         })
@@ -33,8 +34,8 @@ FirebaseConnection.prototype = {
 
     ready : function() {
         var ready = (this.root != undefined && this.root.getAuth() != null)
-        if (ready && !this.connectMessage) { console.log('Connected to Firebase! :-D'); this.connectMessage = true }
-        if (!ready && this.connectMessage) { console.log('Disconnected from Firebase! :-('); this.connectMessage = false }
+        if (ready && !this.connectMessage) { console.log(chalk.green('Connected to Firebase! :-D')); this.connectMessage = true }
+        if (!ready && this.connectMessage) { console.log(chalk.red('Disconnected from Firebase! :-(')); this.connectMessage = false }
         return ready
     }
 }

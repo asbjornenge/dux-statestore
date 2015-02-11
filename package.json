@@ -18,10 +18,12 @@
   "homepage": "https://github.com/asbjornenge/dux-statestore",
   "dependencies": {
     "chalk": "^0.5.1",
+    "cowsay": "^1.0.3",
     "deep-diff": "^0.3.0",
     "dux-dispatcher-connection": "^2.0.0",
     "firebase": "^2.1.1",
     "minimist": "^1.1.0",
-    "prettyjson": "^1.0.0"
+    "prettyjson": "^1.0.0",
+    "sillystring": "^0.1.2"
   }
 }

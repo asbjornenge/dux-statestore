@@ -10,6 +10,9 @@ var args = require('minimist')(process.argv.slice(2), {
         'connection-timeout' : process.env['CONNECTION_TIMEOUT'] || 1000
     }
 })
+var chalk           = require('chalk')
+var cowsay          = require('cowsay')
+var silly           = require('sillystring')
 var utils           = require('./utils')
 var fb_conn         = require('./firebase-connection')
 var dp_conn         = require('dux-dispatcher-connection')
@@ -30,8 +33,19 @@ var api        = new StateApi({}, dispatcher)
 
 var check_state = function() {
     var ready = (firebase_connection.ready() && dispatcher_connection.ready)
-    if (ready && !dispatcher.running) { dispatcher.start(); setTimeout(api.start.bind(api),3000) } 
-    if (!ready && dispatcher.running) dispatcher.stop()
+    if (ready && !dispatcher.running) { 
+        dispatcher.start() 
+        console.log(chalk.magenta('Starting State Dispatcher ₍˄·͈༝·͈˄*₎◞'))
+        setTimeout(function() {
+            api.start()
+            console.log(chalk.magenta('Starting State HTTP API ~(=^‥^)'))
+            console.log(chalk.cyan(cowsay.say({ text : "I'm READY for "+silly(), w : true })))  
+        },3000) 
+    } 
+    if (!ready && dispatcher.running) {
+        console.log(chalk.red(cowsay.say({ text : 'Stopping Dispatcher', w : true })))  
+        dispatcher.stop()
+    }
 }
 firebase_connection.keepAlive(5000, function(err) {
     if (err) console.error('Firebase Connection Error:',err)
