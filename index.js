@@ -39,7 +39,7 @@ var check_state = function() {
         setTimeout(function() {
             api.start()
             console.log(chalk.magenta('Starting State HTTP API ~(=^‥^)'))
-            console.log(chalk.cyan(cowsay.say({ text:"I'm READY for "+silly(), w:true, W:40 })))  
+            console.log(chalk.cyan(cowsay.say({ text:"I'm READY for "+silly(), w:true, W:35 })))  
         },3000) 
     } 
     if (!ready && dispatcher.running) {
