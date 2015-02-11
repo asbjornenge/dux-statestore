@@ -30,7 +30,7 @@ var api        = new StateApi({}, dispatcher)
 
 var check_state = function() {
     var ready = (firebase_connection.ready() && dispatcher_connection.ready)
-    if (ready && !dispatcher.running) { dispatcher.start(); api.start() } 
+    if (ready && !dispatcher.running) { dispatcher.start(); setTimeout(api.start.bind(api),3000) } 
     if (!ready && dispatcher.running) dispatcher.stop()
 }
 firebase_connection.keepAlive(5000, function(err) {
