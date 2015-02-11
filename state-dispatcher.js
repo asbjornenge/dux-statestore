@@ -11,12 +11,12 @@ var StateDispatcher = function(firebase, dispatcher) {
 StateDispatcher.prototype = {
 
     start : function() {
-        console.log('starting')
+        console.log(chalk.green('Starting State Dispatcher :-)'))
         this.running = true
         this.startListeners()
     },
     stop : function() {
-        console.log('stopping')
+        console.log(chalk.red('Stopping State Dispathcer :-('))
         this.running = false
         this.stopListeners()
     },
