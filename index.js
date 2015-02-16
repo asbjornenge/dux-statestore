@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 var args = require('minimist')(process.argv.slice(2), {
     default : {
-        'firebase-url'       : process.env['FIREBASE_URL'],
-        'firebase-path'      : '/',
-        'firebase-secret'    : process.env['FIREBASE_SECRET'],
-        'dispatcher-host'    : process.env['DISPATCHER_HOST'],
-        'dispatcher-host'    : process.env['DISPATCHER_HOST'],
-        'retry-interval'     : process.env['RETRY_INTERVAL']     || 5000,
-        'connection-timeout' : process.env['CONNECTION_TIMEOUT'] || 1000
+        'firebase-url'      : process.env['FIREBASE_URL'],
+        'firebase-secret'   : process.env['FIREBASE_SECRET'],
+        'dispatcher-host'   : process.env['DISPATCHER_HOST'],
+        'dispatcher-host'   : process.env['DISPATCHER_HOST'],
+        'firebase-path'     : process.env['FIREBASE_PATH']      || '/',
+        'retry-timeout'     : process.env['RETRY_TIMEOUT']      || 500,
+        'retry-interval'    : process.env['RETRY_INTERVAL']     || 5000,
     }
 })
 var chalk           = require('chalk')
@@ -26,7 +26,7 @@ var dispatcher_connection = dp_conn({
     host     : args['dispatcher-host'],
     port     : args['dispatcher-port'],
     interval : args['retry-interval'],
-    timeout  : args['connection-timeout']
+    timeout  : args['retry-timeout']
 })
 var dispatcher = new StateDispatcher(firebase_connection, dispatcher_connection)
 var api        = new StateApi({}, dispatcher) 
