@@ -4,7 +4,7 @@
 
 A StateStore for [Dux](https://github.com/asbjornenge/dux).  
 
-This StateStore uses a [Firebase](https://www.firebase.com/) to store it's state. So if you are just [getting started](https://github.com/asbjornenge/dux-quickstart) with Dux, head over there and create a free firebase for your deployment. You will need the **url** and the **secret** of your firebase. Mare sure to secure your firebase (see below).
+This StateStore uses a [Firebase](https://www.firebase.com/) to store it's state. So if you are just [getting started](https://github.com/asbjornenge/dux-quickstart) with Dux, create a free firebase for your deployment. You will need the **url** and the **secret** of your firebase. Mare sure to secure your firebase (see below).
 
 ## RUN
 
