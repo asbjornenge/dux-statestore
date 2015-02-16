@@ -9,7 +9,7 @@ This StateStore uses a [Firebase](https://www.firebase.com/) to store it's state
 ## RUN
 
     docker run -d asbjornenge/dux-statestore
-        --firebase-url my-dux-test.firebaseio.com   // URL to firebase              (required || FIREBASE_URL env)
+        --firebase-url my-dux-test.firebaseio.com   // Firebase url                 (required || FIREBASE_URL env)
         --firebase-secret <secret>                  // Firebase secret              (required || FIREBASE_SECRET env)
         --dispatcher-host dux-dispatcher.dux.wtf    // Dispatcher hostname          (required || DISPATCHER_HOST env)
         --dispatcher-port 8000                      // Dispatcher port              (required || DISPATCHER_PORT env)
